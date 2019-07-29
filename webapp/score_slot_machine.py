@@ -20,71 +20,27 @@ player_wallet = KeyWallet.load(
 
 
 def get_wallet_balance(wallet_address):
-    return icon_service.get_balance(wallet_address)
+    # Write code here
 
 
 def get_casino_balance():
-    return get_wallet_balance(CASINO_SCORE_ADDRESS)
+    # Write code here
 
 
 def get_player_balance():
-    return get_wallet_balance(player_wallet.get_address())
+    # Write code here
 
 
 # Returns a list of recent transactions
 def get_transactions():
-    call = (
-        CallBuilder()
-        .from_(player_wallet.get_address())
-        .to(CASINO_SCORE_ADDRESS)
-        .method("get_results")
-        .params({})
-        .build()
-    )
-    result = icon_service.call(call)
-
-    transaction_list = []
-    for resultVal in result["result"]:
-        transaction_list.append(ast.literal_eval(resultVal))
-
-    return transaction_list
+    # Write code here
 
 
 # Create a new transaction and returns its hash
 def create_transaction(multiplier=1):
-    transaction = (
-        CallTransactionBuilder()
-        .from_(player_wallet.get_address())
-        .to(CASINO_SCORE_ADDRESS)
-        .method("play")
-        .value(BET_AMOUNT * multiplier)
-        .step_limit(2000000)
-        .nid(3)
-        .nonce(100)
-        .params({})
-        .build()
-    )
-
-    signed_transaction = SignedTransaction(transaction, player_wallet)
-    signed_transaction_hash = icon_service.send_transaction(signed_transaction)
-
-    return signed_transaction_hash
+    # Write code here
 
 
 # Find a transaction by its hash in the list of recent transactions
 def get_transaction(txhash):
-    transaction_list = get_transactions()
-
-    transaction = next(
-        (
-            tx
-            for tx in transaction_list
-            if (tx["txHash"] in (txhash) or txhash in tx["txHash"])
-        ),
-        None,
-    )
-
-    if not transaction:
-        raise Exception("Transaction not ready yet!")
-
-    return transaction
+    # Write code here
