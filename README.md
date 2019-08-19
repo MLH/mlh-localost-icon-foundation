@@ -10,91 +10,46 @@ In this fun workshop, students can learn how to build a Slot Machine application
 - [iconsdk](https://github.com/icon-project/icon-sdk-python) - Official ICON SDK for Python based on ICON JSON RPC API V3. (Installed by pip)
 - [tbears](https://www.icondev.io/docs/tbears-overview) - T-Bears is a suite of development tools for SCORE. [Installation](https://www.icondev.io/docs/tbears-installation)
 
+### Docker
+
+There is an alternative flow that only requires docker
+
+- 
+
 ## Clone the project
 
 Use the command below:
 
 ```sh
-git clone https://github.com/MLH/localhost-score.git
+git clone https://github.com/MLH/mlh-localost-icon-foundation.git
 ```
 
-## Setup python and pyenv
+## Setup
 
-### pyenv
 
-Follow [this guide](https://github.com/pyenv/pyenv) to install pyenv and install python 3
+### docker
 
-```sh
-pyenv install 3.7.1
-```
-
-### create and activate virtual environment
-
-```sh
-# setup the python pyenv virtual development environment
-pyenv virtualenv localhost-icon
-pyenv activate localhost-icon
-source bin/activate
-```
-
-## WebApp
-
-### Install dependencies
-
-The next step is to install the dependencies used by the project. Run the following command:
-
-```sh
-cd webapp
-pip install -r requirements.txt
-```
-
-### Executing the web application
-
-After having all the dependencies installed, you only need to execute the main application file. In this case it will be the file "main.py"
-
-```sh
-cd webapp
-python main.py
-```
-
-Then open [http://localhost:5000/](http://localhost:5000/) to see the application.
+Follow [this guide](https://docs.docker.com/get-started/) to install docker
 
 ## SCORE's Smart Contract
 
-### Install dependencies
+All the commands in this section should run from the docker container
 
-#### T-bears (Install T-Bears with PIP)
 
-Follow [this guide](https://www.icondev.io/docs/tbears-installation#section-install-t-bears-with-pip).
-
-##### Known issue
-
-When trying to install t-bears on MacOS, you may need to follow this workaround.
+### Run the tbears containers
 
 ```sh
-brew install leveldb
-mv /Applications/Xcode.app /Applications/Xcode_cp.app
-ls -la /Applications/ | grep Xcode*
-
-leveldb_version=$(ls /usr/local/Cellar/leveldb/ | tail -1)
-CFLAGS="-mmacosx-version-min=10.7 -stdlib=libc++" \
-pip install tbears \
---no-cache-dir \
---global-option=build_ext \
---global-option="-I/usr/local/Cellar/leveldb/${leveldb_version}/include/" \
---global-option="-L/usr/local/lib"
-
-mv /Applications/XCode_cp.app /Applications/Xcode.app
-ls -la /Applications/ | grep Xcode*
+docker run -it -p 9000:9000 $(docker build -t mlh-localhost-icon-tbears -q . -f Dockerfile.tbears)
 ```
 
-[Source](https://github.com/wbolster/plyvel/issues/66)
+After running this, it will output the `CASINO_SCORE_ADDRESS`. Copy this value and use it in your `.env` file.
 
 ### Deployment to local tbears instance
 
 note: use **test1_Account** as password
 
 ```sh
+# Make sure you are inside the docker tbears container
 tbears deploy slot-machine -k keystores/keystore_test1.json -c config/tbears_cli_config.json
 tbears txresult txnhash
 tbears call -c config/tbears_cli_config.json testcmdline/call.json
@@ -107,10 +62,34 @@ tbears sendtx -k keystores/keystore_test1.json -c config/tbears_cli_config.json 
 note: use **p@ssword1** as password
 
 ```sh
+# Make sure you are inside the docker tbears container
 tbears deploy -t tbears slot-machine -f hxe9d75191906ccc604fc1e45a9f3c59fb856c215f -k keystores/keystore1.json -c config/tbears_cli_config_testnet.json
-tbears txresult txnhash -c config/tbears_cli_config_testnet.json
+tbears txresult txhash -c config/tbears_cli_config_testnet.json
 ```
 
 - Testnet tracker https://bicon.tracker.solidwallet.io/ put the score address
 
 - Iconex extension in chrome browser. Create a wallet and get wallet address
+
+
+## WebApp
+
+### Environment Variables
+
+Run the following command to create webapp's .env file.
+
+```sh
+cp webapp/.env.example webapp/.env
+```
+
+Replace the `CASINO_SCORE_ADDRESS` with the address you got from the deployment of the contract.
+
+### Executing the web application
+
+From the root folder, run the following command:
+
+```sh
+docker run --env-file=webapp/.env -p 5000:5000 $(docker build -t mlh-localhost-icon -q . -f Dockerfile.webapp)
+```
+
+Then open [http://localhost:5000/](http://localhost:5000/) to see the application.

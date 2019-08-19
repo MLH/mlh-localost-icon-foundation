@@ -13,6 +13,7 @@ CASINO_SCORE_ADDRESS = config.CASINO_SCORE_ADDRESS
 BET_AMOUNT = config.BET_AMOUNT
 
 icon_service = IconService(HTTPProvider(config.ICON_SERVICE_PROVIDER_URL))
+
 player_wallet = KeyWallet.load(
     config.PLAYER_WALLET_PRIVATE_KEY_FILE_PATH, config.PLAYER_WALLET_PASSWORD
 )
