@@ -4,17 +4,18 @@ In this fun workshop, students can learn how to build a Slot Machine application
 
 ## Requirements and dependencies
 
+### Docker
+
+The only required dependency to run the project is docker.
+
+### Used in the project
+
 - [Python3](https://www.python.org/) - We recommend using virtual environments. They will help on the creation of isolated environments so different python versions can run on the same machine. Check more about virtual environments [here](https://docs.python.org/3/library/venv.html). (Needs to be installed manually)
 - [Pip](https://pip.pypa.io/en/latest/installing/) - The python package manager. (Needs to be installed manually)
 - [Flask](http://flask.pocoo.org/) - A simple and flexible Python Web Framework that provides with tools, libraries and technologies to build a web application. (Installed by pip)
 - [iconsdk](https://github.com/icon-project/icon-sdk-python) - Official ICON SDK for Python based on ICON JSON RPC API V3. (Installed by pip)
 - [tbears](https://www.icondev.io/docs/tbears-overview) - T-Bears is a suite of development tools for SCORE. [Installation](https://www.icondev.io/docs/tbears-installation)
 
-### Docker
-
-There is an alternative flow that only requires docker
-
-- 
 
 ## Clone the project
 
